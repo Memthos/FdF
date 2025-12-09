@@ -1,0 +1,6 @@
+[submodule "libs/libft_tools"]
+	path = libs/libft_tools
+	url = git@github.com:Memthos/libft_tools.git
+[submodule "libs/MacroLibX"]
+	path = libs/MacroLibX
+	url = https://github.com/seekrs/MacroLibX.git
