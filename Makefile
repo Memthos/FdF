@@ -3,22 +3,21 @@ OBJS_DIR=objects/
 HEADERS=headers/
 SRCS=fdf.c
 OBJS=$(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
-LIBFT_DIR=libs/libft_rework/
+LIBFT_DIR=libs/libft_tools/
 LIBFT=$(addprefix $(LIBFT_DIR), libft.a)
 MACROLIBX_DIR=libs/MacroLibX/
 MACROLIBX=$(addprefix $(MACROLIBX_DIR), libmlx.so)
-CFLAGS=-Wall -Wextra -Werror -I$(HEADERS) -lSDL2
+CFLAGS=-Wall -Wextra -Werror -I$(HEADERS)
 CC=cc
 NAME=fdf
 
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT) $(MACROLIBX)
-	@$(CC) $(CFLAGS) -o $@ $^
+	@$(CC) $(CFLAGS) -lSDL2 -o $@ $^
 	@echo "Finished compiling FdF"
 
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c
-	@echo "Compiling sources..."
 	@mkdir -p $(OBJS_DIR)
 	@$(CC) $(CFLAGS) -o $@ -c $<
 
