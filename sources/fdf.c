@@ -6,12 +6,11 @@
 /*   By: mperrine <mperrine@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 11:51:22 by mperrine          #+#    #+#             */
-/*   Updated: 2025/12/10 10:57:18 by mperrine         ###   ########.fr       */
+/*   Updated: 2025/12/11 13:25:46 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/fdf.h"
-#include "../libs/MacroLibX/includes/mlx_extended.h"
 
 static void	close_hook(int key, void *param)
 {
@@ -29,8 +28,8 @@ int	main(void)
 	main_win.info = (mlx_window_create_info){
 		.render_target = NULL,
 		.title = "FdF",
-		.width = 1280,
-		.height = 720,
+		.width = SCREEN_SIZE_X,
+		.height = SCREEN_SIZE_Y,
 		.is_fullscreen = false,
 		.is_resizable = false};
 	main_win.win = mlx_new_window(mlx, &main_win.info);
@@ -39,4 +38,10 @@ int	main(void)
 	mlx_loop(mlx);
 	mlx_destroy_window(mlx, main_win.win);
 	mlx_destroy_context(mlx);
+}
+
+void	world_to_screen(t_vertex_info *vertex, t_vector_3 *world)
+{
+	vertex->pos.x = (world->x - world->y) * TILE_SIZE_X / 2;
+	vertex->pos.y = (world->x + world->y) * TILE_SIZE_Y / 2 - world->z;
 }
