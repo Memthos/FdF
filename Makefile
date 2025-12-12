@@ -1,7 +1,7 @@
 SRCS_DIR=sources/
 OBJS_DIR=objects/
 HEADERS=headers/
-SRCS=fdf.c map.c
+SRCS=fdf.c map.c close.c
 OBJS=$(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
 LIBFT_DIR=libs/libft_tools/
 LIBFT=$(addprefix $(LIBFT_DIR), libft.a)
