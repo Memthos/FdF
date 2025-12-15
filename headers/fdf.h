@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 11:51:36 by mperrine          #+#    #+#             */
-/*   Updated: 2025/12/12 13:16:43 by mperrine         ###   ########.fr       */
+/*   Updated: 2025/12/15 15:57:46 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef struct s_info
 	t_mlx_win		draw;
 	int				map_hgt;
 	int				map_wdt;
-	t_vertex_info	**map;
+	t_vertex_info	***map;
 }					t_info;
 
 t_info	*ft_mlx_init(void);
