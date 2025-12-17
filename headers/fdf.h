@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 11:51:36 by mperrine          #+#    #+#             */
-/*   Updated: 2025/12/15 15:57:46 by mperrine         ###   ########.fr       */
+/*   Updated: 2025/12/17 13:32:01 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ typedef struct s_vector_2
 
 typedef struct s_vertex_info
 {
-	t_vector_3	world;
-	t_vector_2	screen;
+	t_vector_3	wp;
+	t_vector_2	sp;
 	mlx_color	col;
 }				t_vertex_info;
 
@@ -57,8 +57,6 @@ typedef struct s_info
 	mlx_context		mlx;
 	t_mlx_win		main;
 	t_mlx_win		draw;
-	int				map_hgt;
-	int				map_wdt;
 	t_vertex_info	***map;
 }					t_info;
 
@@ -67,6 +65,6 @@ void	parse_map(t_info **info, char *file);
 void	close_fdf(int code, char *msg, t_info **info);
 void	close_hook(int key, void *param);
 void	close_win(t_info **info);
-void	world_to_screen(t_vertex_info *vertex, t_vector_3 *world);
+t_vector_2	world_to_screen(t_vertex_info *vertex);
 
 #endif

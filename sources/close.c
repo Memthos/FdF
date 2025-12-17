@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 11:16:16 by mperrine          #+#    #+#             */
-/*   Updated: 2025/12/15 17:04:43 by mperrine         ###   ########.fr       */
+/*   Updated: 2025/12/17 10:52:54 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,22 @@
 static void	clear_map(t_info **info)
 {
 	int	i;
+	int	j;
 
-	i = -1;
-	while ((*info)->map[i++])
+	i = 0;
+	if (!(*info)->map)
+		return ;
+	while ((*info)->map[i])
+	{
+		j = 0;
+		while ((*info)->map[i][j])
+		{
+			free((*info)->map[i][j]);
+			j++;
+		}
 		free((*info)->map[i]);
+		i++;
+	}
 	free((*info)->map);
 }
 

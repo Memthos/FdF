@@ -1,13 +1,13 @@
 SRCS_DIR=sources/
 OBJS_DIR=objects/
 HEADERS=headers/
-SRCS=fdf.c map.c close.c
+SRCS=fdf.c map_01.c map_02.c close.c
 OBJS=$(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
 LIBFT_DIR=libs/libft_tools/
 LIBFT=$(addprefix $(LIBFT_DIR), libft.a)
 MACROLIBX_DIR=libs/MacroLibX/
 MACROLIBX=$(addprefix $(MACROLIBX_DIR), libmlx.so)
-CFLAGS=-Wall -Wextra -Werror -I$(HEADERS)
+CFLAGS=-Wall -Wextra -Werror -I$(HEADERS) -g
 CC=cc
 NAME=fdf
 
