@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 11:51:36 by mperrine          #+#    #+#             */
-/*   Updated: 2025/12/17 13:32:01 by mperrine         ###   ########.fr       */
+/*   Updated: 2025/12/18 10:10:01 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,13 @@ typedef struct s_info
 	t_vertex_info	***map;
 }					t_info;
 
-t_info	*ft_mlx_init(void);
-void	parse_map(t_info **info, char *file);
-void	close_fdf(int code, char *msg, t_info **info);
-void	close_hook(int key, void *param);
-void	close_win(t_info **info);
-t_vector_2	world_to_screen(t_vertex_info *vertex);
+t_info		*ft_mlx_init(void);
+void		parse_map(t_info **info, char *file);
+int			check_file_format(t_info **info, char *file);
+u_int32_t	hex_to_rgba(const char *hex);
+void		close_fdf(int code, char *msg, t_info **info);
+void		close_hk(int key, void *param);
+void		close_win(t_info **info);
+t_vector_2	world_to_screen(t_vertex_info *v);
 
 #endif

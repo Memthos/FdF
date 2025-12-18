@@ -6,62 +6,38 @@
 /*   By: mperrine <mperrine@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 13:04:06 by mperrine          #+#    #+#             */
-/*   Updated: 2025/12/17 13:52:40 by mperrine         ###   ########.fr       */
+/*   Updated: 2025/12/18 10:11:08 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/fdf.h"
 
-static uint32_t	hex_to_rgba(t_info **info, const char *hex)
-{
-	uint32_t	rgba;
-	uint32_t	nb;
-	int			i;
-
-	rgba = 0;
-	i = 0;
-	while (i < 8)
-	{
-		if (hex[i] >= '0' && hex[i] <= '9')
-			nb = hex[i] - '0';
-		else if (hex[i] >= 'a' && hex[i] <= 'f')
-			nb = hex[i] - 'a' + 10;
-		else if (hex[i] >= 'A' && hex[i] <= 'F')
-			nb = hex[i] - 'A' + 10;
-		else
-			close_fdf(1, "Map color error", info);
-		rgba <<= 4 | nb;
-		i++;
-	}
-	return (rgba);
-}
-
-static int	parse_vertex(t_info **info, const char *s, int line_nb, int line_pos)
+static int	parse_vertex(t_info **info, const char *s, int l_nb, int l_pos)
 {
 	char			**values;
 	t_vertex_info	*v;
+	u_int32_t		rgba;
 
 	v = malloc(sizeof(t_vertex_info));
 	if (!v)
 		return (1);
-	v->wp.x = line_pos;
-	v->wp.y = line_nb;
+	rgba = 0xFFFFFFFF;
 	if (ft_strchr(s, ','))
 	{
 		values = ft_split(s, ',');
 		if (!values)
 			return (1);
-		v->wp.z = ft_atoi(values[0]);
-		v->col = (mlx_color){.rgba = hex_to_rgba(info, values[1] + 2)};
+		v->wp = (t_vector_3){l_pos, l_nb, ft_atoi(values[0])};
+		rgba = hex_to_rgba(values[1] + 2);
 		free(values);
+		if (!rgba)
+			return (1);
 	}
 	else
-	{
-		v->wp.z = ft_atoi(s);
-		v->col = (mlx_color){.rgba = 0xFFFFFFFF};
-	}
+		v->wp = (t_vector_3){l_pos, l_nb, ft_atoi(s)};
+	v->col = (mlx_color){.rgba = rgba};
 	v->sp = world_to_screen(v);
-	(*info)->map[line_nb][line_pos] = v;
+	(*info)->map[l_nb][l_pos] = v;
 	return (0);
 }
 
@@ -70,7 +46,9 @@ static int	parse_line(t_info **info, int fd, int line_nb)
 	char	**coordinates;
 	char	*line;
 	int		i;
+	int		ret;
 
+	ret = 0;
 	line = get_next_line(fd);
 	if (!line)
 		return (1);
@@ -83,21 +61,13 @@ static int	parse_line(t_info **info, int fd, int line_nb)
 		i++;
 	(*info)->map[line_nb] = malloc(sizeof(t_vertex_info *) * (i + 1));
 	if (!(*info)->map[line_nb])
-	{
-		free(coordinates);
-		return (1);
-	}
-	(*info)->map[line_nb][i] = NULL;
-	while (coordinates[--i])
-	{
-		if (parse_vertex(info, coordinates[i], line_nb, i))
-		{
-			free(coordinates);
-			return (1);
-		}
-	}
+		ret = 1;
+	if (!ret)
+		(*info)->map[line_nb][i] = NULL;
+	while (!ret && coordinates[--i])
+		ret = parse_vertex(info, coordinates[i], line_nb, i);
 	free(coordinates);
-	return (0);
+	return (ret);
 }
 
 static int	get_map_hgt(t_info **info, char *file)
@@ -143,7 +113,11 @@ void	parse_map(t_info **info, char *file)
 	int		i;
 	int		fd;
 	int		hgt;
+	int		ret;
 
+	if (check_file_format(info, file))
+		close_fdf(1, "Error: File type is wrong", info);
+	ret = 0;
 	hgt = get_map_hgt(info, file);
 	(*info)->map = malloc(sizeof(t_vertex_info **) * (hgt + 1));
 	if (!(*info)->map)
@@ -153,14 +127,10 @@ void	parse_map(t_info **info, char *file)
 	if (fd == -1)
 		close_fdf(1, NULL, info);
 	i = -1;
-	while (++i < hgt)
-	{
-		if (parse_line(info, fd, i))
-		{
-			read_file(fd);
-			close(fd);
-			close_fdf(1, "Error: Parsing failed", info);
-		}
-	}
+	while (!ret && ++i < hgt)
+		ret = parse_line(info, fd, i);
+	read_file(fd);
 	close(fd);
+	if (ret)
+		close_fdf(1, "Error: Parsing failed", info);
 }
