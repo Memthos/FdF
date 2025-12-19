@@ -6,19 +6,34 @@
 /*   By: mperrine <mperrine@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 08:59:27 by mperrine          #+#    #+#             */
-/*   Updated: 2025/12/19 00:04:37 by mperrine         ###   ########.fr       */
+/*   Updated: 2025/12/19 14:10:16 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/fdf.h"
 
-t_vector_2	world_to_screen(t_vertex_info *v)
+void	isometric_projection(t_info **info)
 {
-	t_vector_2	screen;
+	int	l_nb;
+	int	l_pos;
 
-	screen.x = (v->wp.x - v->wp.y) * TILE_SIZE_X / 2 + SCREEN_SIZE_X / 2;
-	screen.y = (v->wp.x + v->wp.y) * TILE_SIZE_Y / 2 + v->wp.z + SCREEN_SIZE_Y / 2;
-	return (screen);
+	l_nb = -1;
+	while ((*info)->map[++l_nb])
+	{
+		l_pos = -1;
+		while ((*info)->map[l_nb][++l_pos])
+		{
+			(*info)->map[l_nb][l_pos]->sp.x = ((*info)->map[l_nb][l_pos]->wp.x
+					- (*info)->map[l_nb][l_pos]->wp.y)
+				* ((*info)->tile_size.x / 2)
+				+ ((*info)->sc_size.x / 2) - ((*info)->tile_size.x * 2);
+			(*info)->map[l_nb][l_pos]->sp.y = ((*info)->map[l_nb][l_pos]->wp.x
+					+ (*info)->map[l_nb][l_pos]->wp.y)
+				* ((*info)->tile_size.y / 2)
+				+ (*info)->map[l_nb][l_pos]->wp.z
+				+ ((*info)->sc_size.y / 10);
+		}
+	}
 }
 
 uint32_t	hex_to_rgba(const char *hex)

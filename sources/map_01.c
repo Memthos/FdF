@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 13:04:06 by mperrine          #+#    #+#             */
-/*   Updated: 2025/12/18 23:29:20 by mperrine         ###   ########.fr       */
+/*   Updated: 2025/12/19 13:37:14 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ static int	parse_vertex(t_info **info, const char *s, int l_nb, int l_pos)
 	else
 		v->wp = (t_vector_3){l_pos, l_nb, ft_atoi(s)};
 	v->col = (mlx_color){.rgba = rgba};
-	v->sp = world_to_screen(v);
 	(*info)->map[l_nb][l_pos] = v;
 	return (0);
 }

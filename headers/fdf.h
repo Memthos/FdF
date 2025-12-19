@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 11:51:36 by mperrine          #+#    #+#             */
-/*   Updated: 2025/12/19 00:10:23 by mperrine         ###   ########.fr       */
+/*   Updated: 2025/12/19 14:10:55 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,6 @@
 # include <stdio.h>
 # include <math.h>
 # include <fcntl.h>
-
-# define SCREEN_SIZE_X	1280
-# define SCREEN_SIZE_Y	720
-# define TILE_SIZE_X	32
-# define TILE_SIZE_Y	16
 
 typedef struct s_vector_3
 {
@@ -47,6 +42,8 @@ typedef struct s_vertex_info
 
 typedef struct s_info
 {
+	t_vector_2				sc_size;
+	t_vector_2				tile_size;
 	mlx_context				mlx;
 	mlx_window				win;
 	mlx_window_create_info	info;
@@ -54,15 +51,16 @@ typedef struct s_info
 	t_vertex_info			***map;
 }							t_info;
 
-void		ft_mlx_init(t_info **info);
 void		parse_map(t_info **info, char *file);
 int			check_file_format(t_info **info, char *file);
 u_int32_t	hex_to_rgba(const char *hex);
-void		close_fdf(int code, char *msg, t_info **info);
-void		close_hk(int key, void *param);
-void		close_win(t_info **info);
-t_vector_2	world_to_screen(t_vertex_info *v);
-void		free_tab(char **tab);
+void		isometric_projection(t_info **info);
+void		set_sizes(t_info **info);
+void		ft_mlx_init(t_info **info);
 void		show_vertexs(t_info **info);
+void		close_hk(int key, void *param);
+void		close_fdf(int code, char *msg, t_info **info);
+void		close_win(t_info **info);
+void		free_tab(char **tab);
 
 #endif
