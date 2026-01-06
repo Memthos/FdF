@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 11:51:36 by mperrine          #+#    #+#             */
-/*   Updated: 2025/12/19 14:10:55 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/01/06 16:37:15 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@
 # include <stdio.h>
 # include <math.h>
 # include <fcntl.h>
+
+# define SCREEN_W 1280
+# define SCREEN_H 720
+# define Z_SCALE 1
 
 typedef struct s_vector_3
 {
@@ -33,12 +37,12 @@ typedef struct s_vector_2
 	int	y;
 }		t_vector_2;
 
-typedef struct s_vertex_info
+typedef struct s_vinfo
 {
 	t_vector_3	wp;
 	t_vector_2	sp;
 	mlx_color	col;
-}				t_vertex_info;
+}				t_vinfo;
 
 typedef struct s_info
 {
@@ -47,8 +51,8 @@ typedef struct s_info
 	mlx_context				mlx;
 	mlx_window				win;
 	mlx_window_create_info	info;
-	mlx_image				image;
-	t_vertex_info			***map;
+	mlx_image				img;
+	t_vinfo					***map;
 }							t_info;
 
 void		parse_map(t_info **info, char *file);
@@ -58,6 +62,11 @@ void		isometric_projection(t_info **info);
 void		set_sizes(t_info **info);
 void		ft_mlx_init(t_info **info);
 void		show_vertexs(t_info **info);
+void		draw_mesh(t_info **info);
+void		draw_line(t_info **info, t_vinfo *v1, t_vinfo *v2);
+void		draw_bresenham_hor(t_info **info, t_vinfo *v1, t_vinfo *v2);
+void		draw_bresenham_ver(t_info **info, t_vinfo *v1, t_vinfo *v2);
+mlx_color	get_col_gradient(t_vinfo *v1, t_vinfo *v2, t_vector_2 pix_pos);
 void		close_hk(int key, void *param);
 void		close_fdf(int code, char *msg, t_info **info);
 void		close_win(t_info **info);

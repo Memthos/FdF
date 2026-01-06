@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 11:51:22 by mperrine          #+#    #+#             */
-/*   Updated: 2025/12/19 13:38:43 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/01/06 16:15:51 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	ft_mlx_init(t_info **info)
 		.width = (*info)->sc_size.x, .height = (*info)->sc_size.y,
 		.is_fullscreen = false, .is_resizable = false};
 	(*info)->win = mlx_new_window((*info)->mlx, &(*info)->info);
-	(*info)->image = mlx_new_image((*info)->mlx,
+	(*info)->img = mlx_new_image((*info)->mlx,
 			(*info)->sc_size.x, (*info)->sc_size.y);
 	mlx_on_event((*info)->mlx, (*info)->win, MLX_KEYDOWN, close_hk, info);
 	mlx_on_event((*info)->mlx, (*info)->win, MLX_WINDOW_EVENT, close_hk, info);
@@ -39,6 +39,6 @@ int	main(int ac, char **av)
 	set_sizes(&info);
 	isometric_projection(&info);
 	ft_mlx_init(&info);
-	show_vertexs(&info);
+	draw_mesh(&info);
 	mlx_loop(info->mlx);
 }

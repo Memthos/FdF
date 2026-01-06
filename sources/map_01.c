@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 13:04:06 by mperrine          #+#    #+#             */
-/*   Updated: 2025/12/19 13:37:14 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/01/06 15:59:24 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 static int	parse_vertex(t_info **info, const char *s, int l_nb, int l_pos)
 {
 	char			**values;
-	t_vertex_info	*v;
+	t_vinfo			*v;
 	u_int32_t		rgba;
 
-	v = malloc(sizeof(t_vertex_info));
+	v = malloc(sizeof(t_vinfo));
 	if (!v)
 		return (1);
 	rgba = 0xFFFFFFFF;
@@ -58,7 +58,7 @@ static int	parse_line(t_info **info, int fd, int line_nb)
 	i = 0;
 	while (coordinates[i])
 		i++;
-	(*info)->map[line_nb] = malloc(sizeof(t_vertex_info *) * (i + 1));
+	(*info)->map[line_nb] = malloc(sizeof(t_vinfo *) * (i + 1));
 	if (!(*info)->map[line_nb])
 		ret = 1;
 	if (!ret)
@@ -118,7 +118,7 @@ void	parse_map(t_info **info, char *file)
 		close_fdf(1, "Error: File type is wrong", info);
 	ret = 0;
 	hgt = get_map_hgt(info, file);
-	(*info)->map = malloc(sizeof(t_vertex_info **) * (hgt + 1));
+	(*info)->map = malloc(sizeof(t_vinfo **) * (hgt + 1));
 	if (!(*info)->map)
 		close_fdf(2, "Error: Malloc failed", info);
 	(*info)->map[hgt] = NULL;
