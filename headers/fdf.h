@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 11:51:36 by mperrine          #+#    #+#             */
-/*   Updated: 2026/01/06 16:37:15 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/01/07 14:20:32 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@
 # include <math.h>
 # include <fcntl.h>
 
-# define SCREEN_W 1280
-# define SCREEN_H 720
-# define Z_SCALE 1
+# define SCREEN_W 1600
+# define SCREEN_H 900
+# define SCALE_Z 3
 
 typedef struct s_vector_3
 {
@@ -48,6 +48,8 @@ typedef struct s_info
 {
 	t_vector_2				sc_size;
 	t_vector_2				tile_size;
+	t_vector_2				map_size;
+	t_vector_2				map_z;
 	mlx_context				mlx;
 	mlx_window				win;
 	mlx_window_create_info	info;

@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 09:43:16 by mperrine          #+#    #+#             */
-/*   Updated: 2026/01/06 16:35:43 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/01/07 10:55:58 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	draw_bresenham_hor(t_info **info, t_vinfo *v1, t_vinfo *v2)
 	int				i;
 
 	distance = (t_vector_2){abs(v2->sp.x - v1->sp.x), v2->sp.y - v1->sp.y};
-	direction = distance.y / abs(distance.y);
+	direction = (int) copysign(1, distance.y - 1e-9);
 	distance.y *= direction;
 	p = (t_vector_2){v1->sp.x, v1->sp.y};
 	decision_p = 2 * distance.y - distance.x;
@@ -124,4 +124,5 @@ void	draw_mesh(t_info **info)
 					(*info)->map[l_nb + 1][l_pos]);
 		}
 	}
+	mlx_put_image_to_window((*info)->mlx, (*info)->win, (*info)->img, 0, 0);
 }
