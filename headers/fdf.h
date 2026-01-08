@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 11:51:36 by mperrine          #+#    #+#             */
-/*   Updated: 2026/01/07 14:20:32 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/01/08 14:44:20 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@
 
 # define SCREEN_W 1600
 # define SCREEN_H 900
-# define SCALE_Z 3
+# define SCALE_Z 1
+# define SCREEN_MG 40
+# define MIN_TILE_SIZE 4
 
 typedef struct s_vector_3
 {
@@ -59,7 +61,6 @@ typedef struct s_info
 
 void		parse_map(t_info **info, char *file);
 int			check_file_format(t_info **info, char *file);
-u_int32_t	hex_to_rgba(const char *hex);
 void		isometric_projection(t_info **info);
 void		set_sizes(t_info **info);
 void		ft_mlx_init(t_info **info);
@@ -68,7 +69,6 @@ void		draw_mesh(t_info **info);
 void		draw_line(t_info **info, t_vinfo *v1, t_vinfo *v2);
 void		draw_bresenham_hor(t_info **info, t_vinfo *v1, t_vinfo *v2);
 void		draw_bresenham_ver(t_info **info, t_vinfo *v1, t_vinfo *v2);
-mlx_color	get_col_gradient(t_vinfo *v1, t_vinfo *v2, t_vector_2 pix_pos);
 void		close_hk(int key, void *param);
 void		close_fdf(int code, char *msg, t_info **info);
 void		close_win(t_info **info);

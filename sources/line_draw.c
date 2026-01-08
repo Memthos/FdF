@@ -6,26 +6,11 @@
 /*   By: mperrine <mperrine@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 09:43:16 by mperrine          #+#    #+#             */
-/*   Updated: 2026/01/07 10:55:58 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/01/08 15:16:34 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/fdf.h"
-
-mlx_color	get_col_gradient(t_vinfo *v1, t_vinfo *v2, t_vector_2 pix_pos)
-{
-	mlx_color	col;
-	int			dist;
-
-	dist = (pix_pos.x - v1->sp.x) * (v2->sp.x - v1->sp.x);
-	if (v2->sp.x - v1->sp.x < v2->sp.y - v1->sp.y)
-		dist = (pix_pos.y - v1->sp.y) * (v2->sp.y - v1->sp.y);
-	col = (mlx_color){.r = (1 - dist) * v1->col.r + dist * v2->col.r,
-		.g = (1 - dist) * v1->col.g + dist * v2->col.g,
-		.b = (1 - dist) * v1->col.b + dist * v2->col.b,
-		.a = 255};
-	return (col);
-}
 
 void	draw_bresenham_hor(t_info **info, t_vinfo *v1, t_vinfo *v2)
 {
@@ -83,6 +68,8 @@ void	draw_line(t_info **info, t_vinfo *v1, t_vinfo *v2)
 {
 	t_vinfo	*tmp;
 
+	if (!v1 || !v2)
+		return ;
 	if (abs(v2->sp.x - v1->sp.x) > abs(v2->sp.y - v1->sp.y))
 	{
 		if (v1->sp.x > v2->sp.x)

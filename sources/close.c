@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 11:16:16 by mperrine          #+#    #+#             */
-/*   Updated: 2026/01/06 15:56:00 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/01/08 12:53:30 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ static void	clear_map(t_info **info)
 	int	j;
 
 	i = 0;
-	if (!(*info)->map)
-		return ;
 	while ((*info)->map[i])
 	{
 		j = 0;
@@ -36,11 +34,15 @@ static void	clear_map(t_info **info)
 
 void	close_win(t_info **info)
 {
-	mlx_loop_end((*info)->mlx);
-	mlx_destroy_image((*info)->mlx, (*info)->img);
-	mlx_destroy_window((*info)->mlx, (*info)->win);
-	mlx_destroy_context((*info)->mlx);
-	clear_map(info);
+	if ((*info)->mlx)
+	{
+		mlx_loop_end((*info)->mlx);
+		mlx_destroy_image((*info)->mlx, (*info)->img);
+		mlx_destroy_window((*info)->mlx, (*info)->win);
+		mlx_destroy_context((*info)->mlx);
+	}
+	if ((*info)->map)
+		clear_map(info);
 	free(*info);
 }
 
