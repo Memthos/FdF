@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 13:04:06 by mperrine          #+#    #+#             */
-/*   Updated: 2026/01/08 13:55:44 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/01/09 13:11:21 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,15 @@ static int	parse_vertex(t_info **info, const char *s, int l_nb, int l_pos)
 {
 	char			**values;
 	t_vinfo			*v;
-	u_int32_t		rgba;
 
+	if (s[0] == '\n')
+	{
+		(*info)->map[l_nb][l_pos] = NULL;
+		return (0);
+	}
 	v = malloc(sizeof(t_vinfo));
 	if (!v)
 		return (1);
-	rgba = 0xFFFFFFFF;
 	if (ft_strchr(s, ','))
 	{
 		values = ft_split(s, ',');
@@ -32,7 +35,7 @@ static int	parse_vertex(t_info **info, const char *s, int l_nb, int l_pos)
 	}
 	else
 		v->wp = (t_vector_3){l_pos, l_nb, ft_atoi(s)};
-	v->col = (mlx_color){.rgba = rgba};
+	v->col = (mlx_color){.rgba = 0xFFFFFFFF};
 	(*info)->map[l_nb][l_pos] = v;
 	return (0);
 }
@@ -46,14 +49,11 @@ static int	parse_line(t_info **info, int fd, int line_nb)
 
 	ret = 0;
 	line = get_next_line(fd);
-	if (!line)
-		return (1);
 	coordinates = ft_split(line, ' ');
-	free(line);
-	if (!coordinates)
-		return (1);
+	if (line)
+		free(line);
 	i = 0;
-	while (coordinates[i])
+	while (coordinates && coordinates[i])
 		i++;
 	(*info)->map[line_nb] = malloc(sizeof(t_vinfo *) * (i + 1));
 	if (!(*info)->map[line_nb])

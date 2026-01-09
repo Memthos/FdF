@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 08:59:27 by mperrine          #+#    #+#             */
-/*   Updated: 2026/01/08 14:44:27 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/01/09 13:14:42 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,26 @@
 
 void	isometric_projection(t_info **info)
 {
-    int			l_nb;
-    int			l_pos;
-    t_vector_2	half;
+	int			l_nb;
+	int			l_pos;
+	t_vector_2	half;
 
-    half = (t_vector_2){(*info)->tile_size.x / 2, (*info)->tile_size.y / 2};
-    l_nb = -1;
-    while ((*info)->map[++l_nb])
-    {
-       l_pos = -1;
-       while ((*info)->map[l_nb][++l_pos])
-       {
-          (*info)->map[l_nb][l_pos]->sp.x = ((*info)->map[l_nb][l_pos]->wp.x
-          		+ (*info)->map[l_nb][l_pos]->wp.y) * half.x + SCREEN_MG;
-          (*info)->map[l_nb][l_pos]->sp.y = ((*info)->map[l_nb][l_pos]->wp.y
-          		- (*info)->map[l_nb][l_pos]->wp.x) * half.y
-       		- (*info)->map[l_nb][l_pos]->wp.z * half.y * SCALE_Z
-       		+ (*info)->map_z.y * half.y * SCALE_Z
-       		+ ((*info)->map_size.x - 1) * half.y;
-       }
-    }
+	half = (t_vector_2){(*info)->tile_size.x / 2, (*info)->tile_size.y / 2};
+	l_nb = -1;
+	while ((*info)->map[++l_nb])
+	{
+		l_pos = -1;
+		while ((*info)->map[l_nb][++l_pos])
+		{
+			(*info)->map[l_nb][l_pos]->sp.x = ((*info)->map[l_nb][l_pos]->wp.x
+					+ (*info)->map[l_nb][l_pos]->wp.y) * half.x + SCREEN_MG;
+			(*info)->map[l_nb][l_pos]->sp.y = ((*info)->map[l_nb][l_pos]->wp.y
+					- (*info)->map[l_nb][l_pos]->wp.x) * half.y
+				- (*info)->map[l_nb][l_pos]->wp.z * half.y * SCALE_Z
+				+ (*info)->map_z.y * half.y * SCALE_Z
+				+ ((*info)->map_size.x - 1) * half.y;
+		}
+	}
 }
 
 int	check_file_format(t_info **info, char *file)
@@ -85,20 +85,21 @@ static void	get_map_size(t_info **info)
 	}
 }
 
-void    set_sizes(t_info **info)
+void	set_sizes(t_info **info)
 {
-	int    tiles_w;
-	int    tiles_h;
-	int    x_range;
-	int    y_range;
-	int    z_contribution;
+	int	tiles_w;
+	int	tiles_h;
+	int	x_range;
+	int	y_range;
+	int	z_contribution;
 
 	get_map_size(info);
 	x_range = (*info)->map_size.x + (*info)->map_size.y - 1;
 	z_contribution = ((*info)->map_z.y - (*info)->map_z.x) * SCALE_Z;
 	if (z_contribution > x_range)
 		z_contribution = x_range;
-	y_range = ((*info)->map_size.x + (*info)->map_size.y - 2) / 3 + z_contribution;
+	y_range = ((*info)->map_size.x + (*info)->map_size.y - 2) / 3
+		+ z_contribution;
 	tiles_w = (SCREEN_W - (SCREEN_MG * 2)) / x_range;
 	tiles_h = (SCREEN_H - (SCREEN_MG * 2)) / y_range;
 	if (tiles_w < tiles_h)

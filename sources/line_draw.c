@@ -6,13 +6,13 @@
 /*   By: mperrine <mperrine@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 09:43:16 by mperrine          #+#    #+#             */
-/*   Updated: 2026/01/08 15:16:34 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/01/09 13:20:07 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/fdf.h"
 
-void	draw_bresenham_hor(t_info **info, t_vinfo *v1, t_vinfo *v2)
+static void	draw_bresenham_hor(t_info **info, t_vinfo *v1, t_vinfo *v2)
 {
 	t_vector_2		p;
 	t_vector_2		distance;
@@ -38,7 +38,7 @@ void	draw_bresenham_hor(t_info **info, t_vinfo *v1, t_vinfo *v2)
 	}
 }
 
-void	draw_bresenham_ver(t_info **info, t_vinfo *v1, t_vinfo *v2)
+static void	draw_bresenham_ver(t_info **info, t_vinfo *v1, t_vinfo *v2)
 {
 	t_vector_2		p;
 	t_vector_2		distance;
@@ -64,7 +64,7 @@ void	draw_bresenham_ver(t_info **info, t_vinfo *v1, t_vinfo *v2)
 	}
 }
 
-void	draw_line(t_info **info, t_vinfo *v1, t_vinfo *v2)
+static void	draw_line(t_info **info, t_vinfo *v1, t_vinfo *v2)
 {
 	t_vinfo	*tmp;
 
@@ -92,6 +92,21 @@ void	draw_line(t_info **info, t_vinfo *v1, t_vinfo *v2)
 	}
 }
 
+static int	get_next_line_value(t_info **info, int l_nb, int l_pos)
+{
+	int	i;
+
+	if (!(*info)->map[l_nb + 1] || !(*info)->map[l_nb + 1][0])
+		return (1);
+	i = 0;
+	while (++i < l_pos)
+	{
+		if (!(*info)->map[l_nb + 1][i])
+			return (1);
+	}
+	return (0);
+}
+
 void	draw_mesh(t_info **info)
 {
 	int	l_nb;
@@ -106,7 +121,7 @@ void	draw_mesh(t_info **info)
 			if ((*info)->map[l_nb][l_pos + 1])
 				draw_line(info, (*info)->map[l_nb][l_pos],
 					(*info)->map[l_nb][l_pos + 1]);
-			if ((*info)->map[l_nb + 1])
+			if (!get_next_line_value(info, l_nb, l_pos))
 				draw_line(info, (*info)->map[l_nb][l_pos],
 					(*info)->map[l_nb + 1][l_pos]);
 		}

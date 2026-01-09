@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 11:51:36 by mperrine          #+#    #+#             */
-/*   Updated: 2026/01/08 14:44:20 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/01/09 13:16:10 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,6 @@ void		set_sizes(t_info **info);
 void		ft_mlx_init(t_info **info);
 void		show_vertexs(t_info **info);
 void		draw_mesh(t_info **info);
-void		draw_line(t_info **info, t_vinfo *v1, t_vinfo *v2);
-void		draw_bresenham_hor(t_info **info, t_vinfo *v1, t_vinfo *v2);
-void		draw_bresenham_ver(t_info **info, t_vinfo *v1, t_vinfo *v2);
 void		close_hk(int key, void *param);
 void		close_fdf(int code, char *msg, t_info **info);
 void		close_win(t_info **info);
