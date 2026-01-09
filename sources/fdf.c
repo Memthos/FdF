@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 11:51:22 by mperrine          #+#    #+#             */
-/*   Updated: 2026/01/08 12:46:01 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/01/09 13:38:24 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,12 @@ int	main(int ac, char **av)
 	t_info	*info;
 
 	if (ac != 2)
-		return (1);
+		close_fdf(2, "Error: Wrong number of arguments", NULL);
 	info = malloc(sizeof(t_info));
-	info->mlx = NULL;
 	if (!info)
 		close_fdf(2, "Error: Malloc failed", NULL);
+	info->mlx = NULL;
+	info->map = NULL;
 	parse_map(&info, av[1]);
 	set_sizes(&info);
 	isometric_projection(&info);

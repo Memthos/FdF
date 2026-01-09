@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.f>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 11:16:16 by mperrine          #+#    #+#             */
-/*   Updated: 2026/01/08 12:53:30 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/01/09 13:39:39 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	close_fdf(int code, char *msg, t_info **info)
 		else
 			perror("Error");
 	}
-	if (info || *info)
+	if (info && *info)
 		close_win(info);
 	exit(code);
 }
