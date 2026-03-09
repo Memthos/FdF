@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mperrine <mperrine@student.42angouleme.f>  +#+  +:+       +#+        */
+/*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 11:51:22 by mperrine          #+#    #+#             */
-/*   Updated: 2026/01/09 13:38:24 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/09 16:11:08 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/fdf.h"
+#include "../includes/fdf.h"
 
-void	ft_mlx_init(t_info **info)
+static void	init_mlx(t_info **info)
 {
 	(*info)->mlx = mlx_init();
 	(*info)->info = (mlx_window_create_info){
@@ -40,7 +40,7 @@ int	main(int ac, char **av)
 	parse_map(&info, av[1]);
 	set_sizes(&info);
 	isometric_projection(&info);
-	ft_mlx_init(&info);
+	init_mlx(&info);
 	draw_mesh(&info);
 	mlx_loop(info->mlx);
 }

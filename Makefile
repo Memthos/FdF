@@ -1,32 +1,34 @@
-SRCS_DIR=sources/
-OBJS_DIR=objects/
-HEADERS=headers/
+CC=gcc
+CFLAGS=-Wall -Wextra -Werror -I$(HEADERS) -g
+VPATH=sources
+OBJS_DIR=objs/
+HEADERS=includes/
 SRCS=fdf.c map_01.c map_02.c close.c utils.c line_draw.c
 OBJS=$(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
 LIBFT_DIR=libs/libft_tools/
 LIBFT=$(addprefix $(LIBFT_DIR), libft.a)
 MACROLIBX_DIR=libs/MacroLibX/
 MACROLIBX=$(addprefix $(MACROLIBX_DIR), libmlx.so)
-CFLAGS=-Wall -Wextra -Werror -I$(HEADERS) -g
-CC=cc
 NAME=fdf
 
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT) $(MACROLIBX)
-	@$(CC) $(CFLAGS) -lSDL2 -o $@ $^
+	@$(CC) $(CFLAGS) -lSDL2 -lm -o $@ $^
 	@echo "Finished compiling FdF"
 
-$(OBJS_DIR)%.o: $(SRCS_DIR)%.c
-	@mkdir -p $(OBJS_DIR)
+$(OBJS_DIR)%.o: %.c | $(OBJS_DIR)
 	@$(CC) $(CFLAGS) -o $@ -c $<
+
+$(OBJS_DIR):
+	@mkdir -p $(OBJS_DIR)
 
 $(LIBFT):
 	@make -sC $(LIBFT_DIR) all
 	@echo "Compiled library Libft"
 
 $(MACROLIBX):
-	@make -sC $(MACROLIBX_DIR) all
+	@make -sC $(MACROLIBX_DIR) all -j
 	@echo "Compiled library MinilibX"
 
 clean:

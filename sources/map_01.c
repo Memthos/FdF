@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map.c                                              :+:      :+:    :+:   */
+/*   map_01.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mperrine <mperrine@student.42angouleme.f>  +#+  +:+       +#+        */
+/*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 13:04:06 by mperrine          #+#    #+#             */
-/*   Updated: 2026/01/09 13:11:21 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/09 16:42:49 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/fdf.h"
+#include "../includes/fdf.h"
 
 static int	parse_vertex(t_info **info, const char *s, int l_nb, int l_pos)
 {
@@ -66,11 +66,12 @@ static int	parse_line(t_info **info, int fd, int line_nb)
 	return (ret);
 }
 
-static int	get_map_hgt(t_info **info, char *file)
+static void	get_map_size(t_info **info, char *file)
 {
 	int		fd;
-	int		hgt;
 	char	*line;
+	int		wdt;
+	int		i;
 
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
@@ -81,18 +82,29 @@ static int	get_map_hgt(t_info **info, char *file)
 		close(fd);
 		close_fdf(1, "Error: File is empty", info);
 	}
-	hgt = 0;
 	while (line)
 	{
-		hgt++;
+		(*info)->map_size.y++;
+		wdt = 0;
+		i = 0;
+		while (line[i])
+		{
+			if (ft_isdigit(line[i++]))
+			{
+				while (line[i] && ft_isdigit(line[i]))
+					i++;
+				wdt++;
+			}
+		}
+		if (wdt > (*info)->map_size.x)
+			(*info)->map_size.x = wdt;
 		free(line);
 		line = get_next_line(fd);
 	}
 	close(fd);
-	return (hgt);
 }
 
-void	read_file(int fd)
+static void	read_file(int fd)
 {
 	char	*line;
 
@@ -108,23 +120,23 @@ void	parse_map(t_info **info, char *file)
 {
 	int		i;
 	int		fd;
-	int		hgt;
 	int		ret;
 
 	if (check_file_format(info, file))
 		close_fdf(1, "Error: File type is wrong", info);
 	ret = 0;
-	hgt = get_map_hgt(info, file);
-	(*info)->map = malloc(sizeof(t_vinfo **) * (hgt + 1));
+	(*info)->map_size = (t_vector_2){0, 0};
+	get_map_size(info, file);
+	(*info)->map = malloc(sizeof(t_vinfo **) * ((*info)->map_size.y + 1));
 	if (!(*info)->map)
 		close_fdf(2, "Error: Malloc failed", info);
-	(*info)->map[hgt] = NULL;
+	(*info)->map[(*info)->map_size.y] = NULL;
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 		close_fdf(1, NULL, info);
-	i = -1;
-	while (!ret && ++i < hgt)
-		ret = parse_line(info, fd, i);
+	i = 0;
+	while (!ret && i < (*info)->map_size.y)
+		ret = parse_line(info, fd, i++);
 	read_file(fd);
 	close(fd);
 	if (ret)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mperrine <mperrine@student.42angouleme.f>  +#+  +:+       +#+        */
+/*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 11:51:36 by mperrine          #+#    #+#             */
-/*   Updated: 2026/01/09 13:16:10 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/09 17:14:13 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@
 
 # define SCREEN_W 1600
 # define SCREEN_H 900
-# define SCALE_Z 1
-# define SCREEN_MG 40
+# define SCREEN_MG 20
 # define MIN_TILE_SIZE 4
+# define SCALE_Z 2
 
 typedef struct s_vector_3
 {
@@ -51,7 +51,7 @@ typedef struct s_info
 	t_vector_2				sc_size;
 	t_vector_2				tile_size;
 	t_vector_2				map_size;
-	t_vector_2				map_z;
+	t_vector_2				map_r_size;
 	mlx_context				mlx;
 	mlx_window				win;
 	mlx_window_create_info	info;
@@ -63,7 +63,6 @@ void		parse_map(t_info **info, char *file);
 int			check_file_format(t_info **info, char *file);
 void		isometric_projection(t_info **info);
 void		set_sizes(t_info **info);
-void		ft_mlx_init(t_info **info);
 void		show_vertexs(t_info **info);
 void		draw_mesh(t_info **info);
 void		close_hk(int key, void *param);

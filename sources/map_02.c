@@ -3,38 +3,58 @@
 /*                                                        :::      ::::::::   */
 /*   map_02.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mperrine <mperrine@student.42angouleme.f>  +#+  +:+       +#+        */
+/*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 08:59:27 by mperrine          #+#    #+#             */
-/*   Updated: 2026/01/09 13:14:42 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/09 17:16:11 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/fdf.h"
+#include "../includes/fdf.h"
 
 void	isometric_projection(t_info **info)
 {
-	int			l_nb;
-	int			l_pos;
-	t_vector_2	half;
+	int			cur_hgt;
+	int			cur_wdt;
 
-	half = (t_vector_2){(*info)->tile_size.x / 2, (*info)->tile_size.y / 2};
-	l_nb = -1;
-	while ((*info)->map[++l_nb])
+	cur_hgt = 0;
+	while ((*info)->map[cur_hgt++])
 	{
-		l_pos = -1;
-		while ((*info)->map[l_nb][++l_pos])
+		cur_wdt = 0;
+		while ((*info)->map[cur_hgt - 1][cur_wdt++])
 		{
-			(*info)->map[l_nb][l_pos]->sp.x = ((*info)->map[l_nb][l_pos]->wp.x
-					+ (*info)->map[l_nb][l_pos]->wp.y) * half.x + SCREEN_MG;
-			(*info)->map[l_nb][l_pos]->sp.y = ((*info)->map[l_nb][l_pos]->wp.y
-					- (*info)->map[l_nb][l_pos]->wp.x) * half.y
-				- (*info)->map[l_nb][l_pos]->wp.z * half.y * SCALE_Z
-				+ (*info)->map_z.y * half.y * SCALE_Z
-				+ ((*info)->map_size.x - 1) * half.y;
+			(*info)->map[cur_hgt - 1][cur_wdt - 1]->sp.x = ((*info)->map[cur_hgt - 1][cur_wdt - 1]->wp.x
+					+ (*info)->map[cur_hgt - 1][cur_wdt - 1]->wp.y) * (*info)->tile_size.x + SCREEN_MG;
+			(*info)->map[cur_hgt - 1][cur_wdt - 1]->sp.y = ((*info)->map[cur_hgt - 1][cur_wdt - 1]->wp.y
+						- (*info)->map[cur_hgt - 1][cur_wdt - 1]->wp.x) * (*info)->tile_size.y
+						+ (*info)->sc_size.y / 2
+						- (*info)->map[cur_hgt - 1][cur_wdt - 1]->wp.z * (*info)->tile_size.y * SCALE_Z;
 		}
 	}
 }
+
+// void	isometric_projection(t_info **info)
+// {
+// 	int			l_nb;
+// 	int			l_pos;
+// 	t_vector_2	half;
+
+// 	half = (t_vector_2){(*info)->tile_size.x / 2, (*info)->tile_size.y / 2};
+// 	l_nb = -1;
+// 	while ((*info)->map[++l_nb])
+// 	{
+// 		l_pos = -1;
+// 		while ((*info)->map[l_nb][++l_pos])
+// 		{
+// 			(*info)->map[l_nb][l_pos]->sp.x = ((*info)->map[l_nb][l_pos]->wp.x
+// 					+ (*info)->map[l_nb][l_pos]->wp.y) * half.x + SCREEN_MG;
+// 			(*info)->map[l_nb][l_pos]->sp.y = ((*info)->map[l_nb][l_pos]->wp.y
+// 					- (*info)->map[l_nb][l_pos]->wp.x) * half.y
+// 				- (*info)->map[l_nb][l_pos]->wp.z * half.y
+// 				+ ((*info)->map_size.x - 1) * half.y;
+// 		}
+// 	}
+// }
 
 int	check_file_format(t_info **info, char *file)
 {
@@ -58,57 +78,34 @@ int	check_file_format(t_info **info, char *file)
 	return (ret);
 }
 
-static void	get_map_size(t_info **info)
+static void	set_real_map_size(t_info **info)
 {
-	int	l_pos;
+	int	x;
+	int	y;
 
-	(*info)->map_size = (t_vector_2){0, 0};
-	(*info)->map_z = (t_vector_2){0, 0};
-	while ((*info)->map[(*info)->map_size.y])
-	{
-		l_pos = 0;
-		while ((*info)->map[(*info)->map_size.y][l_pos])
-		{
-			if ((*info)->map[(*info)->map_size.y][l_pos]->wp.z
-					< (*info)->map_z.x)
-				(*info)->map_z.x
-					= (*info)->map[(*info)->map_size.y][l_pos]->wp.z;
-			if ((*info)->map[(*info)->map_size.y][l_pos]->wp.z
-					> (*info)->map_z.y)
-				(*info)->map_z.y
-					= (*info)->map[(*info)->map_size.y][l_pos]->wp.z;
-			l_pos++;
-		}
-		if (l_pos - 1 > (*info)->map_size.x)
-			(*info)->map_size.x = l_pos - 1;
-		(*info)->map_size.y++;
-	}
+	x = (*info)->map_size.x;
+	y = (*info)->map_size.y;
+	(*info)->map_r_size.x = sqrt(x * x + y * y);
+	(*info)->map_r_size.y = (*info)->map_r_size.x / 2;
 }
 
 void	set_sizes(t_info **info)
 {
 	int	tiles_w;
 	int	tiles_h;
-	int	x_range;
-	int	y_range;
-	int	z_contribution;
 
-	get_map_size(info);
-	x_range = (*info)->map_size.x + (*info)->map_size.y - 1;
-	z_contribution = ((*info)->map_z.y - (*info)->map_z.x) * SCALE_Z;
-	if (z_contribution > x_range)
-		z_contribution = x_range;
-	y_range = ((*info)->map_size.x + (*info)->map_size.y - 2) / 3
-		+ z_contribution;
-	tiles_w = (SCREEN_W - (SCREEN_MG * 2)) / x_range;
-	tiles_h = (SCREEN_H - (SCREEN_MG * 2)) / y_range;
-	if (tiles_w < tiles_h)
-		(*info)->tile_size.y = tiles_w;
+	set_real_map_size(info);
+	if ((*info)->map_r_size.x == 0 || (*info)->map_r_size.y == 0)
+		close_fdf(1, "Error: Wrong map sizes", info);
+	tiles_w = (SCREEN_W - (SCREEN_MG * 2)) / (*info)->map_r_size.x;
+	tiles_h = (SCREEN_H - (SCREEN_MG * 2)) / (*info)->map_r_size.y;
+	if (tiles_w / 2 < tiles_h)
+		(*info)->tile_size.x = tiles_h;
 	else
-		(*info)->tile_size.y = tiles_h;
-	if ((*info)->tile_size.y < MIN_TILE_SIZE / 2)
-		(*info)->tile_size.y = MIN_TILE_SIZE / 2;
-	(*info)->tile_size.x = (*info)->tile_size.y * 2;
-	(*info)->sc_size.x = (x_range * (*info)->tile_size.y) + (SCREEN_MG * 2);
-	(*info)->sc_size.y = (y_range * (*info)->tile_size.y) + (SCREEN_MG * 2);
+		(*info)->tile_size.x = tiles_w;
+	if ((*info)->tile_size.x < MIN_TILE_SIZE)
+		(*info)->tile_size.x = MIN_TILE_SIZE;
+	(*info)->tile_size.y = (*info)->tile_size.x / 2;
+	(*info)->sc_size.x = (*info)->map_r_size.x * (*info)->tile_size.x + SCREEN_MG * 2;
+	(*info)->sc_size.y = (*info)->sc_size.x / 2;
 }
