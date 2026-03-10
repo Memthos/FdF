@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-Wall -Wextra -Werror -I$(HEADERS) -g
-VPATH=sources
+VPATH=srcs
 OBJS_DIR=objs/
 HEADERS=includes/
 SRCS=fdf.c map_01.c map_02.c close.c utils.c line_draw.c
