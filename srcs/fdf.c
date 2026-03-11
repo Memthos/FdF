@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 11:51:22 by mperrine          #+#    #+#             */
-/*   Updated: 2026/03/09 16:11:08 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/11 15:06:27 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static void	init_mlx(t_info **info)
 	(*info)->win = mlx_new_window((*info)->mlx, &(*info)->info);
 	(*info)->img = mlx_new_image((*info)->mlx,
 			(*info)->sc_size.x, (*info)->sc_size.y);
+	mlx_set_fps_goal((*info)->mlx, 30);
 	mlx_on_event((*info)->mlx, (*info)->win, MLX_KEYDOWN, close_hk, info);
 	mlx_on_event((*info)->mlx, (*info)->win, MLX_WINDOW_EVENT, close_hk, info);
 }

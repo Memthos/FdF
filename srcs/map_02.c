@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 08:59:27 by mperrine          #+#    #+#             */
-/*   Updated: 2026/03/09 17:16:11 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/11 17:45:37 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,47 +14,33 @@
 
 void	isometric_projection(t_info **info)
 {
-	int			cur_hgt;
-	int			cur_wdt;
+	int	hgt;
+	int	wdt;
+	int	hgt_offset;
 
-	cur_hgt = 0;
-	while ((*info)->map[cur_hgt++])
+	if ((*info)->map_size.x > (*info)->map_size.y)
+		hgt_offset = ((*info)->map_size.x - (*info)->map_size.y);
+	else
+		hgt_offset = (*info)->map_size.y - (*info)->map_size.x;
+	hgt = 0;
+	while ((*info)->map[hgt])
 	{
-		cur_wdt = 0;
-		while ((*info)->map[cur_hgt - 1][cur_wdt++])
+		wdt = 0;
+		while ((*info)->map[hgt][wdt])
 		{
-			(*info)->map[cur_hgt - 1][cur_wdt - 1]->sp.x = ((*info)->map[cur_hgt - 1][cur_wdt - 1]->wp.x
-					+ (*info)->map[cur_hgt - 1][cur_wdt - 1]->wp.y) * (*info)->tile_size.x + SCREEN_MG;
-			(*info)->map[cur_hgt - 1][cur_wdt - 1]->sp.y = ((*info)->map[cur_hgt - 1][cur_wdt - 1]->wp.y
-						- (*info)->map[cur_hgt - 1][cur_wdt - 1]->wp.x) * (*info)->tile_size.y
-						+ (*info)->sc_size.y / 2
-						- (*info)->map[cur_hgt - 1][cur_wdt - 1]->wp.z * (*info)->tile_size.y * SCALE_Z;
+			(*info)->map[hgt][wdt]->sp.x = ((*info)->map[hgt][wdt]->wp.x
+					+ (*info)->map[hgt][wdt]->wp.y)
+					* (*info)->tile_size.x + SCREEN_MG;
+			(*info)->map[hgt][wdt]->sp.y = ((*info)->map[hgt][wdt]->wp.y
+						- (*info)->map[hgt][wdt]->wp.x) * (*info)->tile_size.y
+						+ (*info)->sc_size.y / 2 + hgt_offset / 2
+						* (*info)->tile_size.y - (*info)->map[hgt][wdt]->wp.z
+						* (*info)->tile_size.y * SCALE_Z;
+			wdt++;
 		}
+		hgt++;
 	}
 }
-
-// void	isometric_projection(t_info **info)
-// {
-// 	int			l_nb;
-// 	int			l_pos;
-// 	t_vector_2	half;
-
-// 	half = (t_vector_2){(*info)->tile_size.x / 2, (*info)->tile_size.y / 2};
-// 	l_nb = -1;
-// 	while ((*info)->map[++l_nb])
-// 	{
-// 		l_pos = -1;
-// 		while ((*info)->map[l_nb][++l_pos])
-// 		{
-// 			(*info)->map[l_nb][l_pos]->sp.x = ((*info)->map[l_nb][l_pos]->wp.x
-// 					+ (*info)->map[l_nb][l_pos]->wp.y) * half.x + SCREEN_MG;
-// 			(*info)->map[l_nb][l_pos]->sp.y = ((*info)->map[l_nb][l_pos]->wp.y
-// 					- (*info)->map[l_nb][l_pos]->wp.x) * half.y
-// 				- (*info)->map[l_nb][l_pos]->wp.z * half.y
-// 				+ ((*info)->map_size.x - 1) * half.y;
-// 		}
-// 	}
-// }
 
 int	check_file_format(t_info **info, char *file)
 {
@@ -78,34 +64,21 @@ int	check_file_format(t_info **info, char *file)
 	return (ret);
 }
 
-static void	set_real_map_size(t_info **info)
-{
-	int	x;
-	int	y;
-
-	x = (*info)->map_size.x;
-	y = (*info)->map_size.y;
-	(*info)->map_r_size.x = sqrt(x * x + y * y);
-	(*info)->map_r_size.y = (*info)->map_r_size.x / 2;
-}
-
 void	set_sizes(t_info **info)
 {
-	int	tiles_w;
-	int	tiles_h;
+	int	x_size;
+	int	y_size;
 
-	set_real_map_size(info);
-	if ((*info)->map_r_size.x == 0 || (*info)->map_r_size.y == 0)
-		close_fdf(1, "Error: Wrong map sizes", info);
-	tiles_w = (SCREEN_W - (SCREEN_MG * 2)) / (*info)->map_r_size.x;
-	tiles_h = (SCREEN_H - (SCREEN_MG * 2)) / (*info)->map_r_size.y;
-	if (tiles_w / 2 < tiles_h)
-		(*info)->tile_size.x = tiles_h;
-	else
-		(*info)->tile_size.x = tiles_w;
+	x_size = (*info)->map_size.x;
+	y_size = (*info)->map_size.y;
+	(*info)->tile_size.x = (SCREEN_W - (SCREEN_MG * 2)) / (x_size + y_size);
 	if ((*info)->tile_size.x < MIN_TILE_SIZE)
 		(*info)->tile_size.x = MIN_TILE_SIZE;
 	(*info)->tile_size.y = (*info)->tile_size.x / 2;
-	(*info)->sc_size.x = (*info)->map_r_size.x * (*info)->tile_size.x + SCREEN_MG * 2;
-	(*info)->sc_size.y = (*info)->sc_size.x / 2;
+	(*info)->map_r_size.x = (x_size + y_size) * ((*info)->tile_size.x);
+	(*info)->map_r_size.y = (x_size + y_size) * ((*info)->tile_size.y);
+	if ((*info)->map_r_size.x == 0 || (*info)->map_r_size.y == 0)
+		close_fdf(1, "Error: Wrong map sizes", info);
+	(*info)->sc_size.x = (*info)->map_r_size.x + SCREEN_MG * 2;
+	(*info)->sc_size.y = (*info)->map_r_size.y  + SCREEN_MG * 2;
 }

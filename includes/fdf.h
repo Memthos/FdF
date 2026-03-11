@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 11:51:36 by mperrine          #+#    #+#             */
-/*   Updated: 2026/03/09 17:14:13 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/11 16:52:25 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # define SCREEN_H 900
 # define SCREEN_MG 20
 # define MIN_TILE_SIZE 4
-# define SCALE_Z 2
+# define SCALE_Z 1
 
 typedef struct s_vector_3
 {
