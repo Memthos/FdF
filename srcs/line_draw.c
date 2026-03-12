@@ -6,119 +6,107 @@
 /*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 09:43:16 by mperrine          #+#    #+#             */
-/*   Updated: 2026/03/12 16:03:32 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/12 22:36:23 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
 
-static void	draw_bresenham_hor(t_info *info, t_vinfo *a, t_vinfo *b)
+static void	x_major(int dx, int dy, t_info *info)
 {
-	t_vector_2		p;
-	t_vector_2		distance;
 	int				decision_p;
-	int				direction;
 	int				i;
 
-	distance = (t_vector_2){ft_abs(b->iso.x - a->iso.x), b->iso.y - a->iso.y};
-	direction = (int) copysign(1, distance.y - 1e-9);
-	distance.y *= direction;
-	p = (t_vector_2){a->iso.x, a->iso.y};
-	decision_p = 2 * distance.y - distance.x;
-	i = -1;
-	while (++i < distance.x)
+	decision_p = 2 * ft_abs(dy) - ft_abs(dx);
+	i = 0;
+	while (i < ft_abs(dx))
 	{
-		mlx_set_image_pixel(info->mlx, info->img, p.x + i, p.y, a->col);
-		if (decision_p >= 0)
+		if (dx < 0)
+			info->a.sp.x -= 1;
+		else
+			info->a.sp.x += 1;
+		if (decision_p < 0)
+			decision_p = decision_p + 2 * ft_abs(dy);
+		else
 		{
-			p.y += direction;
-			decision_p -= 2 * distance.x;
+			if (dy < 0)
+				info->a.sp.y -= 1;
+			else
+				info->a.sp.y += 1;
+			decision_p = decision_p + 2 * ft_abs(dy) - 2 * ft_abs(dx);
 		}
-		decision_p += 2 * distance.y;
+		mlx_set_image_pixel(info->mlx, info->img, info->a.sp.x,
+			info->a.sp.y, info->a.col);
+		i++;
 	}
 }
 
-static void	draw_bresenham_ver(t_info *info, t_vinfo *a, t_vinfo *b)
+static void	y_major(int dx, int dy, t_info *info)
 {
-	t_vector_2		p;
-	t_vector_2		distance;
 	int				decision_p;
-	int				direction;
 	int				i;
 
-	distance = (t_vector_2){b->iso.x - a->iso.x, ft_abs(b->iso.y - a->iso.y)};
-	direction = distance.x / ft_abs(distance.x);
-	distance.x *= direction;
-	p = (t_vector_2){a->iso.x, a->iso.y};
-	decision_p = 2 * distance.x - distance.y;
-	i = -1;
-	while (++i < distance.y)
+	decision_p = 2 * ft_abs(dx) - ft_abs(dy);
+	i = 0;
+	while (i < ft_abs(dy))
 	{
-		mlx_set_image_pixel(info->mlx, info->img, p.x, p.y + i, a->col);
-		if (decision_p >= 0)
+		if (dy < 0)
+			info->a.sp.y -= 1;
+		else
+			info->a.sp.y += 1;
+		if (decision_p < 0)
+			decision_p = decision_p + 2 * ft_abs(dx);
+		else
 		{
-			p.x += direction;
-			decision_p -= 2 * distance.y;
+			if (dx < 0)
+				info->a.sp.x -= 1;
+			else
+				info->a.sp.x += 1;
+			decision_p = decision_p + 2 * ft_abs(dx) - 2 * ft_abs(dy);
 		}
-		decision_p += 2 * distance.x;
+		mlx_set_image_pixel(info->mlx, info->img, info->a.sp.x,
+			info->a.sp.y, info->a.col);
+		i++;
 	}
 }
 
-static void	draw_line(t_vinfo *a, t_vinfo *b, t_info *info)
+static	void	draw_line(t_vinfo v1, t_vinfo v2, t_info *info)
 {
-	t_vinfo	*tmp;
+	int	dx;
+	int	dy;
 
-	if (!a || !b)
-		return ;
-	if (ft_abs(b->iso.x - a->iso.x) > ft_abs(b->iso.y - a->iso.y))
-	{
-		if (a->iso.x > b->iso.x)
-		{
-			tmp = a;
-			a = b;
-			b = tmp;
-		}
-		draw_bresenham_hor(info, a, b);
-	}
+	info->a = v1;
+	info->b = v2;
+	set_coordinates(info);
+	dx = info->b.sp.x - info->a.sp.x;
+	dy = info->b.sp.y - info->a.sp.y;
+	mlx_set_image_pixel(info->mlx, info->img, info->a.sp.x,
+		info->a.sp.y, info->a.col);
+	if (ft_abs(dx) > ft_abs(dy))
+		x_major(dx, dy, info);
 	else
-	{
-		if (a->iso.y > b->iso.y)
-		{
-			tmp = a;
-			a = b;
-			b = tmp;
-		}
-		draw_bresenham_ver(info, a, b);
-	}
+		y_major(dx, dy, info);
 }
 
-static	void	draw_l_init(t_vinfo a, t_vinfo b, t_info *info)
+void	draw_mesh(t_info *info)
 {
-	set_coordinates(&a, &b, info);
-	draw_line(&a, &b, info);
-}
-
-void	draw_mesh(void *data)
-{
-	t_info	*info;
 	int	x;
 	int	y;
 
-	info = (t_info *)data;
-	x = 0;
-	while (++x < info->map_size.y)
+	mlx_clear_window(info->mlx, info->win, (mlx_color){.rgba = 0x000000FF});
+	y = 0;
+	while (y < info->map_size.y)
 	{
-		y = 0;
-		while (y < info->map_size.x)
+		x = 0;
+		while (x < info->map_size.x)
 		{
 			if (x + 1 < info->map_size.x)
-				draw_l_init(*(info->map[x][y]), *(info->map[x + 1][y]), info);
+				draw_line((info->map[x][y]), (info->map[x + 1][y]), info);
 			if (y + 1 < info->map_size.y)
-				draw_l_init(*(info->map[x][y]), *(info->map[x][y + 1]), info);
-			y++;
+				draw_line((info->map[x][y]), (info->map[x][y + 1]), info);
+			x++;
 		}
-		x++;
+		y++;
 	}
-	mlx_clear_window(info->mlx, info->win, (mlx_color){.rgba = 0x000000FF});
 	mlx_put_image_to_window(info->mlx, info->win, info->img, 0, 0);
 }

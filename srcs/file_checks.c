@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 09:57:01 by mperrine          #+#    #+#             */
-/*   Updated: 2026/03/12 16:01:30 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/12 21:18:38 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,25 +33,25 @@ static long	coords_by_line(char *line)
 	return (size);
 }
 
-int	check_map(t_info **info, char *file)
+int	check_map(t_info *info, char *file)
 {
 	int		fd;
 	char	*line;
 
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
-		close_fdf(1, NULL, *info);
+		close_fdf(1, NULL, info);
 	line = get_next_line(fd);
 	if (!line)
 	{
 		close(fd);
 		return (1);
 	}
-	(*info)->map_size.x = coords_by_line(line);
+	info->map_size.x = coords_by_line(line);
 	while (line)
 	{
-		(*info)->map_size.y++;
-		if (coords_by_line(line) != (*info)->map_size.x)
+		info->map_size.y++;
+		if (coords_by_line(line) != info->map_size.x)
 			return (1);
 		free(line);
 		line = get_next_line(fd);
@@ -60,7 +60,7 @@ int	check_map(t_info **info, char *file)
 	return (0);
 }
 
-int	check_file_format(t_info **info, char *file)
+int	check_file_format(t_info *info, char *file)
 {
 	char	**file_parts;
 	long	i;
@@ -69,7 +69,7 @@ int	check_file_format(t_info **info, char *file)
 
 	file_parts = ft_split(file, '.');
 	if (!file_parts)
-		close_fdf(1, "Error: Filename split failed", *info);
+		close_fdf(1, "Error: Filename split failed", info);
 	ret = 1;
 	i = 0;
 	while (file_parts[i])

@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 22:23:49 by mperrine          #+#    #+#             */
-/*   Updated: 2026/03/12 15:55:01 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/12 21:20:20 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,10 @@ void	free_tab(char **tab)
 static void	clear_map(t_info *info)
 {
 	int	i;
-	int	j;
 
 	i = 0;
-	while (info->map[i])
-	{
-		j = 0;
-		while (info->map[i][j])
-		{
-			free(info->map[i][j]);
-			j++;
-		}
-		free(info->map[i]);
-		i++;
-	}
+	while (i < info->map_size.y)
+		free(info->map[i++]);
 	free(info->map);
 }
 
@@ -62,7 +52,6 @@ static void	close_win(t_info *info)
 	}
 	if (info->map)
 		clear_map(info);
-	free(info);
 }
 
 void	close_fdf(int code, char *msg, t_info *info)
