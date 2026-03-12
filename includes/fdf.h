@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 11:51:36 by mperrine          #+#    #+#             */
-/*   Updated: 2026/03/11 16:52:25 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/12 15:55:41 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,46 +28,51 @@
 
 typedef struct s_vector_3
 {
-	int	x;
-	int	y;
-	int	z;
+	long	x;
+	long	y;
+	long	z;
 }		t_vector_3;
 
 typedef struct s_vector_2
 {
-	int	x;
-	int	y;
+	long	x;
+	long	y;
 }		t_vector_2;
 
 typedef struct s_vinfo
 {
 	t_vector_3	wp;
-	t_vector_2	sp;
+	t_vector_2	iso;
 	mlx_color	col;
 }				t_vinfo;
 
 typedef struct s_info
 {
-	t_vector_2				sc_size;
-	t_vector_2				tile_size;
+	t_vector_2				screen_size;
 	t_vector_2				map_size;
-	t_vector_2				map_r_size;
+	int						proj_type;
+	long					translate_x;
+	long					translate_y;
+	long					zoom;
+	double					pitch;
+	double					yaw;
+	double					roll;
 	mlx_context				mlx;
 	mlx_window				win;
-	mlx_window_create_info	info;
 	mlx_image				img;
 	t_vinfo					***map;
 }							t_info;
 
-void		parse_map(t_info **info, char *file);
-int			check_file_format(t_info **info, char *file);
-void		isometric_projection(t_info **info);
-void		set_sizes(t_info **info);
-void		show_vertexs(t_info **info);
-void		draw_mesh(t_info **info);
-void		close_hk(int key, void *param);
-void		close_fdf(int code, char *msg, t_info **info);
-void		close_win(t_info **info);
-void		free_tab(char **tab);
+void	parse_map(t_info **info, char *file);
+int		check_file_format(t_info **info, char *file);
+int		check_map(t_info **info, char *file);
+long	ft_abs(long nb);
+void	isometric_projection(t_vinfo *a, t_vinfo *b);
+void	set_coordinates(t_vinfo *a, t_vinfo *b, t_info *info);
+void	draw_mesh(void *data);
+void	key_hk(int key, void *param);
+void	m_wheel_hk(int key, void *param);
+void	close_fdf(int code, char *msg, t_info *info);
+void	free_tab(char **tab);
 
 #endif

@@ -3,7 +3,8 @@ CFLAGS=-Wall -Wextra -Werror -I$(HEADERS) -g
 VPATH=srcs
 OBJS_DIR=objs/
 HEADERS=includes/
-SRCS=fdf.c map_01.c map_02.c close.c utils.c line_draw.c
+SRCS=fdf.c file_checks.c hooks.c line_draw.c parser.c projections.c \
+	transforms.c utils.c
 OBJS=$(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
 LIBFT_DIR=libs/libft_tools/
 LIBFT=$(addprefix $(LIBFT_DIR), libft.a)
