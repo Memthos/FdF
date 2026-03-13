@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 09:57:01 by mperrine          #+#    #+#             */
-/*   Updated: 2026/03/13 20:13:17 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/13 20:18:51 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@ static long	coords_by_line(char *line)
 			size++;
 		}
 		if (line[i] == ',')
-			break ;
+		{
+			while (line[i] && line[i] != ' ')
+				i++;
+		}
 		if (line[i])
 			i++;
 	}
