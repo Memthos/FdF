@@ -6,13 +6,13 @@
 /*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 11:16:16 by mperrine          #+#    #+#             */
-/*   Updated: 2026/03/13 14:38:32 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/13 20:04:43 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
 
-static	movement_hk(int key, t_info *info)
+static int	movement_hk(int key, t_info *info)
 {
 	if (key == 26)
 		info->translate_y -= 4;

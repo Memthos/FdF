@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 22:23:49 by mperrine          #+#    #+#             */
-/*   Updated: 2026/03/12 21:20:20 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/13 19:53:37 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,13 @@ long	ft_abs(long nb)
 	if (nb < 0)
 		return (-nb);
 	return (nb);
+}
+
+double	ft_interp(double x1, double x2, double i)
+{
+	if (x1 != x2)
+		return ((i - x1) / (x2 - x1));
+	return (0);
 }
 
 void	free_tab(char **tab)
@@ -31,18 +38,10 @@ void	free_tab(char **tab)
 	free(tab);
 }
 
-static void	clear_map(t_info *info)
+static void	close_win(t_info *info)
 {
 	int	i;
 
-	i = 0;
-	while (i < info->map_size.y)
-		free(info->map[i++]);
-	free(info->map);
-}
-
-static void	close_win(t_info *info)
-{
 	if (info->mlx)
 	{
 		mlx_loop_end(info->mlx);
@@ -51,7 +50,12 @@ static void	close_win(t_info *info)
 		mlx_destroy_context(info->mlx);
 	}
 	if (info->map)
-		clear_map(info);
+	{
+		i = 0;
+		while (i < info->map_size.y)
+			free(info->map[i++]);
+		free(info->map);
+	}
 }
 
 void	close_fdf(int code, char *msg, t_info *info)

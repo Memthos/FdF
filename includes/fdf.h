@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 11:51:36 by mperrine          #+#    #+#             */
-/*   Updated: 2026/03/13 13:29:32 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/13 19:54:00 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void	m_wheel_hk(int key, void *param);
 void	close_fdf(int code, char *msg, t_info *info);
 
 long	ft_abs(long nb);
+double	ft_interp(double x1, double x2, double i);
 void	free_tab(char **tab);
 
 #endif
