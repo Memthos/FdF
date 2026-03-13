@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 09:43:16 by mperrine          #+#    #+#             */
-/*   Updated: 2026/03/12 22:36:23 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/13 13:26:32 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,9 @@ void	draw_mesh(t_info *info)
 	int	x;
 	int	y;
 
-	mlx_clear_window(info->mlx, info->win, (mlx_color){.rgba = 0x000000FF});
 	y = 0;
+	mlx_destroy_image(info->mlx, info->img);
+	info->img = mlx_new_image(info->mlx, SCREEN_W, SCREEN_H);
 	while (y < info->map_size.y)
 	{
 		x = 0;
