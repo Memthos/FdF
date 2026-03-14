@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 13:04:06 by mperrine          #+#    #+#             */
-/*   Updated: 2026/03/12 21:26:13 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/13 20:15:48 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ static int	parse_vertex(t_vinfo *vertex, const char *s, int hgt, int wdt)
 		vertex->wp = (t_vector_3){wdt, hgt, ft_atoi(values[0])};
 		color = parse_color(values[1]);
 		free_tab(values);
+		if (!color)
+			return (1);
 	}
 	else
 		vertex->wp = (t_vector_3){wdt, hgt, ft_atoi(s)};
