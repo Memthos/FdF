@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 09:43:16 by mperrine          #+#    #+#             */
-/*   Updated: 2026/03/13 20:11:36 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/14 15:14:13 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,12 @@ static void	x_major(long dx, long dy, t_info *info)
 	i = 0;
 	while (i < ft_abs(dx))
 	{
-		if (dx < 0)
-			x -= 1;
-		else
-			x += 1;
+		x += (dx >= 0) - (dx < 0);
 		if (decision_p < 0)
 			decision_p = decision_p + 2 * ft_abs(dy);
 		else
 		{
-			if (dy < 0)
-				y -= 1;
-			else
-				y += 1;
+			y += (dy >= 0) - (dy < 0);
 			decision_p = decision_p + 2 * ft_abs(dy) - 2 * ft_abs(dx);
 		}
 		mlx_set_image_pixel(info->mlx, info->img, x, y, get_color(x, y, info));
@@ -77,18 +71,12 @@ static void	y_major(long dx, long dy, t_info *info)
 	i = 0;
 	while (i < ft_abs(dy))
 	{
-		if (dy < 0)
-			y -= 1;
-		else
-			y += 1;
+		y += (dy >= 0) - (dy < 0);
 		if (decision_p < 0)
 			decision_p = decision_p + 2 * ft_abs(dx);
 		else
 		{
-			if (dx < 0)
-				x -= 1;
-			else
-				x += 1;
+			x += (dx >= 0) - (dx < 0);
 			decision_p = decision_p + 2 * ft_abs(dx) - 2 * ft_abs(dy);
 		}
 		mlx_set_image_pixel(info->mlx, info->img, x, y, get_color(x, y, info));
@@ -128,9 +116,9 @@ void	draw_mesh(t_info *info)
 		while (x < info->map_size.x)
 		{
 			if (x + 1 < info->map_size.x)
-				draw_line((info->map[x][y]), (info->map[x + 1][y]), info);
+				draw_line((info->map[y][x]), (info->map[y][x + 1]), info);
 			if (y + 1 < info->map_size.y)
-				draw_line((info->map[x][y]), (info->map[x][y + 1]), info);
+				draw_line((info->map[y][x]), (info->map[y + 1][x]), info);
 			x++;
 		}
 		y++;

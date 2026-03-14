@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 11:51:36 by mperrine          #+#    #+#             */
-/*   Updated: 2026/03/14 14:02:51 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/14 14:47:09 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ typedef struct s_info
 	t_vinfo					**map;
 }							t_info;
 
+void	reset_transforms(t_info *info);
+
 int		check_file_format(t_info *info, char *file);
 int		check_map(t_info *info, char *file);
 
@@ -70,15 +72,16 @@ void	draw_mesh(t_info *info);
 
 void	set_coordinates(t_info *info);
 void	isometric_projection(t_info *info);
-void	cavalier_projection(t_info *info);
+void	oblique_projection(t_info *info);
 
 void	key_hk(int key, void *param);
 void	m_wheel_hk(int key, void *param);
 
-void	close_fdf(int code, char *msg, t_info *info);
-
+void	clear_map(t_info *info, int max);
 long	ft_abs(long nb);
 double	ft_interp(double x1, double x2, double i);
 void	free_tab(char **tab);
+
+void	close_fdf(int code, char *msg, t_info *info);
 
 #endif

@@ -1,50 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   quit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/18 22:23:49 by mperrine          #+#    #+#             */
-/*   Updated: 2026/03/14 14:46:39 by mperrine         ###   ########.fr       */
+/*   Created: 2026/03/14 14:46:42 by mperrine          #+#    #+#             */
+/*   Updated: 2026/03/14 14:53:36 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
 
-long	ft_abs(long nb)
+static void	close_win(t_info *info)
 {
-	if (nb < 0)
-		return (-nb);
-	return (nb);
+	if (info->mlx)
+	{
+		mlx_loop_end(info->mlx);
+		mlx_destroy_image(info->mlx, info->img);
+		mlx_destroy_window(info->mlx, info->win);
+		mlx_destroy_context(info->mlx);
+	}
+	if (info->map)
+		clear_map(info, info->map_size.y);
 }
 
-double	ft_interp(double x1, double x2, double i)
+void	close_fdf(int code, char *msg, t_info *info)
 {
-	if (x1 != x2)
-		return ((i - x1) / (x2 - x1));
-	return (0);
-}
-
-void	free_tab(char **tab)
-{
-	int	i;
-
-	i = -1;
-	if (!tab || !*tab)
-		return ;
-	while (tab[++i])
-		free(tab[i]);
-	free(tab);
-}
-
-void	clear_map(t_info *info, int max)
-{
-	int	i;
-
-	i = 0;
-	while (i < max)
-		free(info->map[i++]);
-	free(info->map);
-	info->map = NULL;
+	if (code != 0)
+	{
+		if (msg)
+			ft_putendl_fd(msg, 2);
+		else
+			perror("Error");
+	}
+	if (info)
+		close_win(info);
+	exit(code);
 }

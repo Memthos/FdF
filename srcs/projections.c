@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 15:33:22 by mperrine          #+#    #+#             */
-/*   Updated: 2026/03/14 13:57:50 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/14 14:07:27 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ void	isometric_projection(t_info *info)
 	info->b.sp.y = (info->b.wp.x + info->b.wp.y) * sin(0.523599) - info->b.wp.z;
 }
 
-void	cavalier_projection(t_info *info)
+void	oblique_projection(t_info *info)
 {
-	info->a.sp.x = info->a.wp.x + info->a.wp.z * 0.5 * cos(0.785398);
-	info->a.sp.y = info->a.wp.y + info->a.wp.z * 0.5 * sin(0.785398);
-	info->b.sp.x = info->b.wp.x + info->b.wp.z * 0.5 * cos(0.785398);
-	info->b.sp.y = info->b.wp.y + info->b.wp.z * 0.5 * sin(0.785398);
+	info->a.sp.x = info->a.wp.x - info->a.wp.z * cos(0.785398);
+	info->a.sp.y = info->a.wp.y - info->a.wp.z * sin(0.785398);
+	info->b.sp.x = info->b.wp.x - info->b.wp.z * cos(0.785398);
+	info->b.sp.y = info->b.wp.y - info->b.wp.z * sin(0.785398);
 }

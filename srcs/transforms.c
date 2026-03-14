@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 08:59:27 by mperrine          #+#    #+#             */
-/*   Updated: 2026/03/14 13:58:58 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/14 14:10:49 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,10 @@ void	set_coordinates(t_info *info)
 	rotate_pitch(info);
 	rotate_yaw(info);
 	rotate_roll(info);
-	if (info->proj_type == 3)
+	if (info->proj_type == 1)
 		isometric_projection(info);
 	else
-		cavalier_projection(info);
+		oblique_projection(info);
 	info->a.sp.x += SCREEN_MG + (SCREEN_W - SCREEN_MG) / 2 + info->translate_x;
 	info->b.sp.x += SCREEN_MG + (SCREEN_W - SCREEN_MG) / 2 + info->translate_x;
 	info->a.sp.y += SCREEN_H / 2 + info->translate_y;

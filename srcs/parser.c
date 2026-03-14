@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 13:04:06 by mperrine          #+#    #+#             */
-/*   Updated: 2026/03/13 20:15:48 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/14 15:13:00 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static uint32_t	parse_color(char *value)
 	return (color);
 }
 
-static int	parse_vertex(t_vinfo *vertex, const char *s, int hgt, int wdt)
+static int	parse_vertex(t_vinfo *vertex, const char *s, long hgt, long wdt)
 {
 	char			**values;
 	uint32_t		color;
@@ -62,11 +62,11 @@ static int	parse_vertex(t_vinfo *vertex, const char *s, int hgt, int wdt)
 	return (0);
 }
 
-static int	parse_line(t_info *info, int fd, int hgt)
+static int	parse_line(t_info *info, int fd, long hgt)
 {
 	char	**coordinates;
 	char	*line;
-	int		i;
+	long	wdt;
 	int		ret;
 
 	ret = 0;
@@ -80,16 +80,15 @@ static int	parse_line(t_info *info, int fd, int hgt)
 	info->map[hgt] = malloc(sizeof(t_vinfo) * info->map_size.x);
 	if (!info->map[hgt])
 		ret = 1;
-	i = 0;
-	while (!ret && i < info->map_size.x)
+	wdt = 0;
+	while (!ret && wdt < info->map_size.x)
 	{
-		ret = parse_vertex(&info->map[hgt][i], coordinates[i], hgt, i);
-		i++;
+		ret = parse_vertex(&info->map[hgt][wdt], coordinates[wdt], hgt, wdt);
+		wdt++;
 	}
 	free_tab(coordinates);
 	return (ret);
 }
-
 
 static void	read_file(int fd)
 {
@@ -105,7 +104,7 @@ static void	read_file(int fd)
 
 void	parse_map(t_info *info, char *file)
 {
-	int		hgt;
+	long	hgt;
 	int		fd;
 	int		ret;
 
@@ -125,5 +124,8 @@ void	parse_map(t_info *info, char *file)
 	read_file(fd);
 	close(fd);
 	if (ret)
+	{
+		clear_map(info, hgt);
 		close_fdf(1, "Error: Parsing failed", info);
+	}
 }
