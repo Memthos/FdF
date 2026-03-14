@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 11:51:36 by mperrine          #+#    #+#             */
-/*   Updated: 2026/03/12 21:45:56 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/14 13:58:28 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	draw_mesh(t_info *info);
 
 void	set_coordinates(t_info *info);
 void	isometric_projection(t_info *info);
+void	cavalier_projection(t_info *info);
 
 void	key_hk(int key, void *param);
 void	m_wheel_hk(int key, void *param);
