@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 11:51:36 by mperrine          #+#    #+#             */
-/*   Updated: 2026/03/14 14:47:09 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/21 00:09:46 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # define SCREEN_W 1600
 # define SCREEN_H 900
 # define SCREEN_MG 20
+# define FOV 500.0
 
 typedef struct s_vector_3
 {
@@ -72,7 +73,7 @@ void	draw_mesh(t_info *info);
 
 void	set_coordinates(t_info *info);
 void	isometric_projection(t_info *info);
-void	oblique_projection(t_info *info);
+void	perspective_projection(t_info *info);
 
 void	key_hk(int key, void *param);
 void	m_wheel_hk(int key, void *param);
