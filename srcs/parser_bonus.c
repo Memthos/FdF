@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 13:04:06 by mperrine          #+#    #+#             */
-/*   Updated: 2026/03/23 14:12:48 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/23 15:31:34 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,19 @@ static uint32_t	parse_color(char *value)
 	uint32_t	color;
 	int			i;
 
-	if (ft_strlen(value) != 8)
+	if (ft_strlen(value) != 8 && !ft_isspace(value[ft_strlen(value) - 1]))
 		return (0);
 	i = 2;
 	color = 0;
 	while (value[i])
 	{
 		if (ft_isdigit(value[i]))
-			color = (color * 16) + (value[i++] - '0');
+			color = (color * 16) + (value[i] - '0');
 		else if (value[i] >= 'a' && value[i] <= 'z')
-			color = (color * 16) + (value[i++] - 'a' + 10);
+			color = (color * 16) + (value[i] - 'a' + 10);
 		else if (value[i] >= 'A' && value[i] <= 'Z')
-			color = (color * 16) + (value[i++] - 'A' + 10);
-		else
-			return (0);
+			color = (color * 16) + (value[i] - 'A' + 10);
+		i++;
 	}
 	color = (color << 8) | 0xFF;
 	return (color);

@@ -6,7 +6,7 @@
 /*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 11:51:36 by mperrine          #+#    #+#             */
-/*   Updated: 2026/03/23 14:45:13 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/23 15:21:14 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,11 @@ void	perspective_projection(t_info *info);
 void	key_hk(int key, void *param);
 void	m_wheel_hk(int key, void *param);
 
-void	clear_map(t_info *info, int max);
+int		ft_isspace(int c);
 long	ft_abs(long nb);
 double	ft_interp(double x1, double x2, double i);
 void	free_tab(char **tab);
+void	clear_map(t_info *info, int max);
 
 void	close_fdf(int code, char *msg, t_info *info);
 

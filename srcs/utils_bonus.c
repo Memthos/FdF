@@ -6,11 +6,18 @@
 /*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 22:23:49 by mperrine          #+#    #+#             */
-/*   Updated: 2026/03/23 14:09:07 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/23 15:21:54 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf_bonus.h"
+
+int	ft_isspace(int c)
+{
+	if ((c >= 9 && c <= 13) || c == 32)
+		return (1);
+	return (0);
+}
 
 long	ft_abs(long nb)
 {
