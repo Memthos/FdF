@@ -1,16 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   line_draw.c                                        :+:      :+:    :+:   */
+/*   line_draw_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 09:43:16 by mperrine          #+#    #+#             */
-/*   Updated: 2026/03/23 14:27:59 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/23 14:27:58 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/fdf.h"
+#include "../includes/fdf_bonus.h"
+
+static mlx_color	get_color(long x, long y, t_info *info)
+{
+	long		dx;
+	long		dy;
+	double		interp;
+	mlx_color	color;
+
+	dx = info->b.sp.x - info->a.sp.x;
+	dy = info->b.sp.y - info->a.sp.y;
+	if (ft_abs(dx) > ft_abs(dy))
+		interp = ft_interp(info->a.sp.x, info->b.sp.x, x);
+	else
+		interp = ft_interp(info->a.sp.y, info->b.sp.y, y);
+	color.r = info->a.col.r + (info->b.col.r - info->a.col.r) * interp;
+	color.g = info->a.col.g + (info->b.col.g - info->a.col.g) * interp;
+	color.b = info->a.col.b + (info->b.col.b - info->a.col.b) * interp;
+	color.a = 0xFF;
+	return (color);
+}
 
 static void	x_major(long dx, long dy, t_info *info)
 {
@@ -33,7 +53,7 @@ static void	x_major(long dx, long dy, t_info *info)
 			y += (dy >= 0) - (dy < 0);
 			decision_p = decision_p + 2 * ft_abs(dy) - 2 * ft_abs(dx);
 		}
-		mlx_set_image_pixel(info->mlx, info->img, x, y, info->a.col);
+		mlx_set_image_pixel(info->mlx, info->img, x, y, get_color(x, y, info));
 		i++;
 	}
 }
@@ -59,7 +79,7 @@ static void	y_major(long dx, long dy, t_info *info)
 			x += (dx >= 0) - (dx < 0);
 			decision_p = decision_p + 2 * ft_abs(dx) - 2 * ft_abs(dy);
 		}
-		mlx_set_image_pixel(info->mlx, info->img, x, y, info->a.col);
+		mlx_set_image_pixel(info->mlx, info->img, x, y, get_color(x, y, info));
 		i++;
 	}
 }

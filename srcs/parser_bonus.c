@@ -1,16 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   parser_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 13:04:06 by mperrine          #+#    #+#             */
-/*   Updated: 2026/03/23 14:14:33 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/23 14:12:48 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/fdf.h"
+#include "../includes/fdf_bonus.h"
+
+static uint32_t	parse_color(char *value)
+{
+	uint32_t	color;
+	int			i;
+
+	if (ft_strlen(value) != 8)
+		return (0);
+	i = 2;
+	color = 0;
+	while (value[i])
+	{
+		if (ft_isdigit(value[i]))
+			color = (color * 16) + (value[i++] - '0');
+		else if (value[i] >= 'a' && value[i] <= 'z')
+			color = (color * 16) + (value[i++] - 'a' + 10);
+		else if (value[i] >= 'A' && value[i] <= 'Z')
+			color = (color * 16) + (value[i++] - 'A' + 10);
+		else
+			return (0);
+	}
+	color = (color << 8) | 0xFF;
+	return (color);
+}
 
 static int	parse_vertex(t_vinfo *vertex, const char *s, long hgt, long wdt)
 {
@@ -24,10 +48,13 @@ static int	parse_vertex(t_vinfo *vertex, const char *s, long hgt, long wdt)
 		if (!values)
 			return (1);
 		vertex->wp = (t_vector_3){wdt, hgt, ft_atoi(values[0])};
+		color = parse_color(values[1]);
 		free_tab(values);
 	}
 	else
 		vertex->wp = (t_vector_3){wdt, hgt, ft_atoi(s)};
+	if (!color)
+		return (1);
 	vertex->col = (mlx_color){.rgba = color};
 	vertex->sp = (t_vector_2){0, 0};
 	return (0);

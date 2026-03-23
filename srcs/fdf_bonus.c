@@ -1,16 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf.c                                              :+:      :+:    :+:   */
+/*   fdf_bonus.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 11:51:22 by mperrine          #+#    #+#             */
-/*   Updated: 2026/03/23 14:47:41 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/23 14:46:52 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/fdf.h"
+#include "../includes/fdf_bonus.h"
+
+void	reset_transforms(t_info *info)
+{
+	if (SCREEN_W / info->map_size.x > SCREEN_H / info->map_size.y)
+		info->zoom = SCREEN_H / info->map_size.y;
+	else
+		info->zoom = SCREEN_W / info->map_size.x;
+	info->translate_x = 0;
+	info->translate_y = 0;
+	info->pitch = 0;
+	info->yaw = 0;
+	info->roll = 0;
+}
 
 static int	init_mlx(t_info *info)
 {
@@ -29,6 +42,7 @@ static int	init_mlx(t_info *info)
 	mlx_set_fps_goal(info->mlx, 60);
 	mlx_on_event(info->mlx, info->win, MLX_KEYDOWN, key_hk, info);
 	mlx_on_event(info->mlx, info->win, MLX_WINDOW_EVENT, key_hk, info);
+	mlx_on_event(info->mlx, info->win, MLX_MOUSEWHEEL, m_wheel_hk, info);
 	return (0);
 }
 
@@ -45,10 +59,8 @@ int	main(int ac, char **av)
 	parse_map(&info, av[1]);
 	if (init_mlx(&info))
 		close_fdf(1, "Error: Mlx fail", &info);
-	if (SCREEN_W / info.map_size.x > SCREEN_H / info.map_size.y)
-		info.zoom = SCREEN_H / info.map_size.y;
-	else
-		info.zoom = SCREEN_W / info.map_size.x;
+	reset_transforms(&info);
+	info.proj_type = 1;
 	draw_mesh(&info);
 	mlx_loop(info.mlx);
 }

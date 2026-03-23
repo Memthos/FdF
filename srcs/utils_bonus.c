@@ -1,22 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 22:23:49 by mperrine          #+#    #+#             */
-/*   Updated: 2026/03/23 14:23:59 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/23 14:09:07 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/fdf.h"
+#include "../includes/fdf_bonus.h"
 
 long	ft_abs(long nb)
 {
 	if (nb < 0)
 		return (-nb);
 	return (nb);
+}
+
+double	ft_interp(double x1, double x2, double i)
+{
+	if (x1 != x2)
+		return ((i - x1) / (x2 - x1));
+	return (0);
 }
 
 void	free_tab(char **tab)

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   file_checks.c                                      :+:      :+:    :+:   */
+/*   file_checks_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 09:57:01 by mperrine          #+#    #+#             */
-/*   Updated: 2026/03/23 14:42:31 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/23 14:42:39 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/fdf.h"
+#include "../includes/fdf_bonus.h"
 
 static long	coords_by_line(char *line)
 {

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   projections.c                                      :+:      :+:    :+:   */
+/*   projections_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mperrine <mperrine@student.42angouleme.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 15:33:22 by mperrine          #+#    #+#             */
-/*   Updated: 2026/03/21 00:13:52 by mperrine         ###   ########.fr       */
+/*   Updated: 2026/03/23 14:09:07 by mperrine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/fdf.h"
+#include "../includes/fdf_bonus.h"
 
 void	isometric_projection(t_info *info)
 {
