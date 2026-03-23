@@ -2,12 +2,9 @@
 
 ## Description
 
-`FdF` (Fil de Fer, meaning "wireframe" in French) is a graphics project from the 42 curriculum that creates a 3D wireframe representation of a landscape from a map file. The program reads a map with height values and displays it as a wireframe mesh using isometric projection.
-
-The program handles:
-- Reading and parsing map files (.fdf format)
-- Wireframe rendering using the MacroLibX graphics library
-- Window management and user interactions
+`FdF` is a project that renders a 3D wireframe representation of a landscape from a file.
+The mandatory part asks for a simple isometric projection.
+Bonus features add a second projection (perspective), zoom, panning, rotation and color per vertex support - defaulting to white when no color is specified.
 
 ## Instructions
 
@@ -16,6 +13,7 @@ A `Makefile` is provided to compile the project.
 **Build**
 ```bash
 make
+make bonus
 ```
 
 **Clean**
@@ -29,20 +27,20 @@ make fclean
 make re
 ```
 
-## Usage
+**Usage**
 ```bash
 ./fdf map_file.fdf
 ```
 
-Example:
-```bash
-./fdf maps/42.fdf
-```
-
-Controls
+**Controls**
 
 - **ESC** - Close the program
+- **WASD** - Move the map
+- **UIOJKL** - Rotate the map
+- **Mouse Wheel** - Zoom in and out
 
 ## Resources
 
-This project was developed without the use of any AI tools.
+AI was used to better understand the maths behind this project and to check spelling errors in this readme.
+
+This [medium](https://medium.com/@amehri_tarik/fdf-42-a-detailed-walkthrough-7184cca317fc) was useful to better understand how the projection algorithm I use works.
